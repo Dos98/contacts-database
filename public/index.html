@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dosaj & Co</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" integrity="sha256-HEtF7HLJZSC3Le1HcsWbz1hDYFPZCqDhZa9QsCgVUdw=" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyB3CeMyYxiwzwQnUaxv-FiF0Q-11sE46_Q",
+        authDomain: "scdosajee-007.firebaseapp.com",
+        databaseURL: "https://scdosajee-007.firebaseio.com",
+        projectId: "scdosajee-007",
+        storageBucket: "scdosajee-007.appspot.com",
+        messagingSenderId: "775504101486"
+    };
+    firebase.initializeApp(config);
+</script>
+<div class="container">
+    <nav class="navbar is-white">
+        <div class="navbar-brand">
+            <a class="navbar-item brand-text" href="#">
+                ScDosajee Contacts Database
+            </a>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="#">
+                    View
+                </a>
+            </div>
+        </div>
+    </nav>
+    <section class="articles">
+        <div class="column is-8 is-offset-2">
+            <section class="hero is-danger is-bold is-small promo-block">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title">
+                            <i class="fa fa-bell-o"></i>
+                            Customer Database
+                        </h1>
+                        <h2 class="subtitle">
+                             Fill up the form
+                        </h2>
+                    </div>
+                </div>
+            </section>
+            <div class="card article">
+                <div class="card-content">
+                    <div class="content article-body">
+                        <p></p>
+                        <p></p>
+                        <h2 class="has-text-centered">Customer Form</h2>
+                        <div class="has-text-centered">
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" id="inputnum" type="text" onblur="number()" placeholder="Number" maxlength="10">
+                                    <span class="icon is-left">
+                                      <i class="fa fa-mobile"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <p id="number-error"></p>
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input class="input" id="inputname" onblur="namee()" type="text" placeholder="Name">
+                                    <span class="icon is-small is-left">
+                                      <i class="fa fa-user"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <p id="name-error"></p>
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input class="input is-rounded" onblur="address()" id="inputaddress" type="text" placeholder="Address">
+                                    <span class="icon is-left">
+                                      <i class="fa fa-address-card"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <p id="address-error"></p>
+                            <div class="field ">
+                                <p class="control">
+                                    <button class="button is-success" onclick="submit()">
+                                        Submit
+                                    </button>
+                                </p>
+                            </div>
+                            <p id="remarks"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    var a = document.getElementById("remarks");
+    function number() {
+        a.innerHTML="";
+        var num = document.getElementById("inputnum");
+        //console.log(num);
+        //console.log(num.value.length)
+        if(num.value.length >= 0 && num.value.length != 10){
+            if(num.value.length < 10){
+                document.getElementById("number-error").innerHTML="Mobile Number length is less than 10";
+                return 0;
+            }
+            else{
+                document.getElementById("number-error").innerHTML="Mobile Number length is greater than 10";
+                return 0;
+            }
+        }
+        else{
+            document.getElementById("number-error").innerHTML="";
+            return 1;
+        }
+    };
+    function namee() {
+        a.innerHTML="";
+        var name = document.getElementById("inputname");
+        //console.log(name);
+        //console.log(name.value.length)
+        if(name.value.length == 0){
+            document.getElementById("name-error").innerHTML="Name Field cannot be empty";
+            return 0;
+        }
+        else{
+            document.getElementById("name-error").innerHTML="";
+            return 1;
+        }
+    };
+    function address() {
+        a.innerHTML="";
+        var add = document.getElementById("inputaddress");
+        //console.log(add);
+        //console.log(add.value.length)
+        if(add.value.length == 0){
+            document.getElementById("address-error").innerHTML="Address Field cannot be empty";
+            return 0;
+        }
+        else{
+            document.getElementById("address-error").innerHTML="";
+            return 1;
+        }
+    };
+    function submit() {
+        if((number() && namee() &&  address())){
+            console.log("submitting");
+            var num = document.getElementById("inputnum");
+            var name = document.getElementById("inputname");
+            var addr = document.getElementById("inputaddress");
+            var numberx = num.value;
+            var scoresRef = firebase.database().ref("contacts/"+numberx);
+            console.log(scoresRef);
+            var msg = {
+                "name": name.value,
+                "number": num.value,
+                "address": addr.value
+            };
+            console.log(msg);
+            scoresRef.set(msg);
+            console.log("submitted");
+            num.value=name.value=addr.value="";
+            var a = document.getElementById("remarks");
+            a.innerHTML="Successfully Submitted!!"
+        }
+        else{
+            console.log("solve errors");
+        }
+    }
+</script>
+</body>
+</html>
